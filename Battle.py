@@ -118,6 +118,8 @@ class battle():
 			enemy = {"name": "Wolf", "hp": [12,12], "str":4, "exp": 100, "lvl":1, "gold": [3,20]}
 		elif(randNum == 5):
 			enemy = {"name": "Boar", "hp": [23,23], "str":1, "exp": 100, "lvl":1, "gold": [10,16]}
+		elif(randNum == 6):
+			enemy = {"name": "Big Bat", "hp": [35,35], "str":1, "exp": 100, "lvl":1, "gold": [10,16]}
 		return enemy 
 
 	#--------------------------------------------------------------------------
