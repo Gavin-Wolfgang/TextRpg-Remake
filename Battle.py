@@ -9,6 +9,7 @@ bright_blue = 	(  0,  0,250)
 green =			(  0,200,  0)
 bright_red = 	(200,  0,  0)
 bright_green = 	(  0,255,  0)
+yellow =        (255, 255, 0)
 something = 	(100,100,100)
 
 class battle():
@@ -25,6 +26,10 @@ class battle():
 			self.enemy = self.cave_battle()
 		elif(location == "forrest"):
 			self.enemy = self.forrest_battle()
+		elif(location == "river"):
+			self.enemy = self.river_battle()
+		elif(location == "harlech_house"):
+			self.enemy = self.harlech_house_battle()
 
 		while loop:
 			for event in pygame.event.get():
@@ -51,7 +56,7 @@ class battle():
 
 
 			pygame.display.update()
-			clock.tick(15)
+			clock.tick(60)
 		self.give_exp()
 		self.give_gold()
 		self.level_up(gameDisplay)
@@ -63,7 +68,12 @@ class battle():
 		size = int(142*(self.charInfo["hp"][0]/self.charInfo["hp"][1]))
 		if(size < 0):
 			size = 0
-		pygame.draw.rect(gameDisplay,bright_red,(73,78,size,27))
+		if self.charInfo["hp"][0]/self.charInfo["hp"][1] > 0.80:
+			pygame.draw.rect(gameDisplay,bright_green,(73,78,size,27))
+		elif self.charInfo["hp"][0]/self.charInfo["hp"][1] > 0.30:
+			pygame.draw.rect(gameDisplay,yellow,(73,78,size,27))
+		else:
+			pygame.draw.rect(gameDisplay,bright_red,(73,78,size,27))
 
 		pygame.draw.rect(gameDisplay,blue,(70,114,150,35))
 		size = int(142*(self.charInfo["mp"][0]/self.charInfo["mp"][1]))
@@ -90,6 +100,25 @@ class battle():
 
 	#--------------------------------------------------------------------------
 
+
+	def forrest_battle(self):
+		randNum = random.randint(1,5)
+		if(randNum == 1):
+			enemy = {"name": "Spider", "hp": [9,9], "str":2, "exp": 100, "lvl":1, "gold": [0,9]}
+		elif(randNum == 2):
+			enemy = {"name": "Bunny", "hp": [5,5], "str":1, "exp": 100, "lvl":1, "gold": [0,6]}
+		elif(randNum == 3):
+			enemy = {"name": "Bear", "hp": [17,17], "str":2, "exp": 100, "lvl":1, "gold": [6,17]}
+		elif(randNum == 4):
+			enemy = {"name": "Wolf", "hp": [12,12], "str":4, "exp": 100, "lvl":1, "gold": [3,20]}
+		elif(randNum == 5):
+			enemy = {"name": "Boar", "hp": [23,23], "str":1, "exp": 100, "lvl":1, "gold": [10,16]}
+		elif(randNum == 6):
+			enemy = {"name": "Big Bat", "hp": [35,35], "str":1, "exp": 100, "lvl":1, "gold": [10,16]}
+		return enemy 
+
+	#--------------------------------------------------------------------------
+
 	def cave_battle(self):
 		randNum = random.randint(1,5)
 		if(randNum == 1):
@@ -106,20 +135,34 @@ class battle():
 
 	#--------------------------------------------------------------------------
 
-	def forrest_battle(self):
+	def river_battle(self):
 		randNum = random.randint(1,5)
 		if(randNum == 1):
-			enemy = {"name": "Spider", "hp": [9,9], "str":2, "exp": 100, "lvl":1, "gold": [0,9]}
+			enemy = {"name": "Giant Squid", "hp": [60,60], "str":6, "exp": 100, "lvl":8, "gold": [15,35]}
 		elif(randNum == 2):
-			enemy = {"name": "Bunny", "hp": [5,5], "str":1, "exp": 100, "lvl":1, "gold": [0,6]}
+			enemy = {"name": "Squid", "hp": [40,40], "str":4, "exp": 100, "lvl":8, "gold": [12,28]}
 		elif(randNum == 3):
-			enemy = {"name": "Bear", "hp": [17,17], "str":2, "exp": 100, "lvl":1, "gold": [6,17]}
+			enemy = {"name": "Water Nymph", "hp": [66,66], "str":6, "exp": 100, "lvl":8, "gold": [26,48]}
 		elif(randNum == 4):
-			enemy = {"name": "Wolf", "hp": [12,12], "str":4, "exp": 100, "lvl":1, "gold": [3,20]}
+			enemy = {"name": "Crab", "hp": [48,48], "str":5, "exp": 100, "lvl":8, "gold": [22,32]}
 		elif(randNum == 5):
-			enemy = {"name": "Boar", "hp": [23,23], "str":1, "exp": 100, "lvl":1, "gold": [10,16]}
-		elif(randNum == 6):
-			enemy = {"name": "Big Bat", "hp": [35,35], "str":1, "exp": 100, "lvl":1, "gold": [10,16]}
+			enemy = {"name": "Giant Crab", "hp": [64,64], "str":6, "exp": 100, "lvl":8, "gold": [25, 50]}
+		return enemy 
+
+	#--------------------------------------------------------------------------
+
+	def harlech_house_battle(self):
+		randNum = random.randint(1,5)
+		if(randNum == 1):
+			enemy = {"name": "Giant Squid", "hp": [60,60], "str":6, "exp": 100, "lvl":12, "gold": [15,35]}
+		elif(randNum == 2):
+			enemy = {"name": "Squid", "hp": [40,40], "str":4, "exp": 100, "lvl":12, "gold": [12,28]}
+		elif(randNum == 3):
+			enemy = {"name": "Water Nymph", "hp": [66,66], "str":6, "exp": 100, "lvl":12, "gold": [26,48]}
+		elif(randNum == 4):
+			enemy = {"name": "Crab", "hp": [48,48], "str":5, "exp": 100, "lvl":12, "gold": [22,32]}
+		elif(randNum == 5):
+			enemy = {"name": "Giant Crab", "hp": [64,64], "str":6, "exp": 100, "lvl":12, "gold": [25, 50]}
 		return enemy 
 
 	#--------------------------------------------------------------------------
@@ -219,12 +262,12 @@ class level_ups():
 			gameDisplay.fill(black)
 
 			print_text(gameDisplay,"+5 hp","arial",20,white,(150,300))
-			print_text(gameDisplay,"+2 hp if warrior","arial",20,white,(150,330))
-			print_text(gameDisplay,"+1 strength","arial",20,white,(150,340))
+			print_text(gameDisplay,"+2 hp if warrior","arial",20,white,(150,340))
+			print_text(gameDisplay,"+1 strength","arial",20,white,(150,380))
 
 			print_text(gameDisplay,"+3 mp","arial",20,white,(400,300))
-			print_text(gameDisplay,"+1 mp if warrior","arial",20,white,(400,300))
-			print_text(gameDisplay,"+1 Intelligence","arial",20,white,(400,300))
+			print_text(gameDisplay,"+1 mp if warrior","arial",20,white,(400,340))
+			print_text(gameDisplay,"+1 Intelligence","arial",20,white,(400,380))
 
 			print_text(gameDisplay,"You get +1 mp and hp no matter which you choose!","arial",20,white,(200,250))
 
@@ -232,7 +275,7 @@ class level_ups():
 			button_image(gameDisplay,"Intelligence",450,475,145,36,buttonNeutral,buttonActive,self.int_up)
 
 			pygame.display.update()
-			clock.tick(15)
+			clock.tick(60)
 
 	#--------------------------------------------------------------------------
 
