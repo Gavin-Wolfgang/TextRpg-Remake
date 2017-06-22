@@ -275,7 +275,7 @@ class level_ups():
 			button_image(gameDisplay,"Intelligence",450,475,145,36,buttonNeutral,buttonActive,self.int_up)
 
 			pygame.display.update()
-			clock.tick(60)
+			clock.tick(15)
 
 	#--------------------------------------------------------------------------
 

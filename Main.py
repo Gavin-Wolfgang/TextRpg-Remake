@@ -33,6 +33,7 @@ blue = 			(  0,  0,200)
 green =			(  0,200,  0)
 bright_red = 	(255,  0,  0)
 bright_green = 	(  0,255,  0)
+yellow =        (255, 255, 0)
 something = 	(100,100,100)
 
 class game_intro():
@@ -206,8 +207,10 @@ class main_menu():
 
 			#Explore
 			elif(self.location == 5):
-				button_image(gameDisplay,"Cave (Level 4)",100,100,145,36,buttonNeutral,buttonActive,self.battle_start, "cave")
-				button_image(gameDisplay,"Forrest (Level 1)",300,100,145,36,buttonNeutral,buttonActive,self.battle_start, "forrest")
+				button_image(gameDisplay,"Forrest (Level 1)",100,100,145,36,buttonNeutral,buttonActive,self.battle_start, "forrest")
+				button_image(gameDisplay,"Cave (Level 4)",300,100,145,36,buttonNeutral,buttonActive,self.battle_start, "cave")
+				button_image(gameDisplay,"River (Level 8)",100,200,145,36,buttonNeutral,buttonActive,self.battle_start, "river")
+				button_image(gameDisplay,"Harlech House (Level 12)",300,200,145,36,buttonNeutral,buttonActive,self.battle_start, "harlech_house")
 				button_image(gameDisplay,"Main Menu",400-73,500,145,36,buttonNeutral,buttonActive,self.change_loc, 1)
 
 			#Quest
@@ -256,7 +259,7 @@ class main_menu():
 		print_text(gameDisplay,text,"arial",15,white,(100,120))
 		text = "You decide to listen to what he has to say."
 		print_text(gameDisplay,text,"arial",15,white,(100,140))
-		text = "Man: They are coming! Someone please listen! we msut fortify the town, we must tell all who will hear!"
+		text = "Man: They are coming! Someone please listen! we must fortify the town, we must tell all who will hear!"
 		print_text(gameDisplay,text,"arial",15,white,(100,160))
 		text = "Man: I fear I am too old to do anything of value for the town other than share my experiences..."
 		print_text(gameDisplay,text,"arial",15,white,(100,180))
@@ -265,6 +268,7 @@ class main_menu():
 		text = "After his speech you see an ominous look in his eyes, when you see this he catches your eye"
 		print_text(gameDisplay,text,"arial",15,white,(100,220))
 		text = "You hold his gaze for a moment then he turns and walks off."
+		print_text(gameDisplay,text,"arial",15,white,(100,240))
 	
 	#--------------------------------------------------------------------------
 

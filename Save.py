@@ -3,7 +3,7 @@ import pickle, os
 def findPath():
 	fPath = os.path.join(os.path.abspath(''))
 	splits = fPath.split("\\")
-	newPath = splits[0] + "\\" + splits[1] + "\\"+splits[2] + "\\" + 'Desktop\\Game\\TextRpg Remake\\Character'
+	newPath = splits[0] + "\\" + splits[1] + "\\"+splits[2] + "\\" + 'Desktop\\Game\\TextRPG Remake2\\Character'
 	return newPath
 
 def char_import(name):
