@@ -68,9 +68,9 @@ class battle():
 		size = int(142*(self.charInfo["hp"][0]/self.charInfo["hp"][1]))
 		if(size < 0):
 			size = 0
-		if self.charInfo["hp"][0]/self.charInfo["hp"][1] > 0.80:
+		if(self.charInfo["hp"][0]/self.charInfo["hp"][1] > 0.80):
 			pygame.draw.rect(gameDisplay,bright_green,(73,78,size,27))
-		elif self.charInfo["hp"][0]/self.charInfo["hp"][1] > 0.30:
+		elif(self.charInfo["hp"][0]/self.charInfo["hp"][1] > 0.30):
 			pygame.draw.rect(gameDisplay,yellow,(73,78,size,27))
 		else:
 			pygame.draw.rect(gameDisplay,bright_red,(73,78,size,27))

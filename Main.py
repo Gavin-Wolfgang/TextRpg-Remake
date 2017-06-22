@@ -13,7 +13,6 @@ pygame.display.set_caption("Battle")
 clock = pygame.time.Clock()
 
 KEY_REPEAT_SETTING = (200,70)
-pygame.key.set_repeat(*KEY_REPEAT_SETTING)
 
 global inputText, charInfo, buttonNeutral, buttonActive, background
 																						#1 = heal 2 = fire 3 = ice 4 = inferno
