@@ -50,3 +50,63 @@ def buy_armor(armor, gold, toBuy):
 			armor = ["Steel Armor", 7]
 			return armor, gold
 	return armor, gold
+
+def buy_rune(rune, gold, toBuy):
+		if(toBuy == "Health Rune"):
+			if(gold > 500):
+				gold -= 500
+				rune = ["Health Rune","hp", 1.05]
+				return rune, gold
+
+		elif(toBuy == "Strength Rune"):
+			if(gold > 500):
+				gold -= 500
+				rune = ["Strenth Rune","str", 1.1]
+				return rune, gold
+
+		elif(toBuy == "Intelligence Rune"):
+			if(gold > 500):
+				gold -= 500
+				rune = ["Strenth Rune","int", 1.1]
+				return rune, gold
+
+		elif(toBuy == "Defense Rune"):
+			if(gold > 500):
+				gold -= 500
+				rune = ["Defense Rune","def", 1.25]
+				return rune, gold
+
+		elif(toBuy == "Mana Rune"):
+			if(gold > 500):
+				gold -= 500
+				rune = ["Mana Rune","mp", 1.1]
+				return rune, gold
+		return rune, gold
+
+def buy_health_potion(health_potion, gold, toBuy):
+	if(toBuy == "Weak Health Potion"):
+		if(gold > 100):
+			gold -= 100
+			health_potion[0] += 1
+			return health_potion, gold
+
+	elif(toBuy == "Health Potion"):
+		if(gold > 300):
+			gold -= 300
+			health_potion[1] += 1
+			return health_potion, gold
+
+	elif(toBuy == "Strong Health Potion"):
+		if(gold > 500):
+			gold -= 500
+			health_potion[2] += 1
+			return health_potion, gold
+
+	elif(toBuy == "Max Health Potion"):
+		if(gold > 1000):
+			gold -= 1000
+			health_potion[3] += 1
+			return health_potion, gold
+
+	return health_potion,gold
+

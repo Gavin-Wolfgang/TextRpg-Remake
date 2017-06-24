@@ -1,5 +1,6 @@
 import random, pygame, time, math
 from Visuals import*
+from Text import*
 
 black =			(  0,  0,  0)
 white = 		(255,255,255)
@@ -21,6 +22,9 @@ class battle():
 		self.charInfo = charInfo
 		self.text = ["",""]
 		self.end = False
+		self.give_gold_loc = 0
+		self.gold = 0
+		self.location = 0
 		loop = True
 		if(location == "cave"):
 			self.enemy = self.cave_battle()
@@ -31,6 +35,8 @@ class battle():
 		elif(location == "harlech_house"):
 			self.enemy = self.harlech_house_battle()
 
+		battleText = battle_text(gameDisplay,charInfo,self.enemy, self.text )
+
 		while loop:
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
@@ -38,68 +44,42 @@ class battle():
 					quit()
 			gameDisplay.fill(black)
 
-			self.char_text(gameDisplay)
-			self.enemy_text(gameDisplay)
-
-			print_text(gameDisplay,self.text[0],"arial",20,red,(75,400))
-			print_text(gameDisplay,self.text[1],"arial",20,red,(450,400))
+			battleText.char_text()
+			battleText.enemy_text()
+			battleText.attacks()
 
 			self.enemy_turn()
 			if(self.charInfo["hp"][0] <= 0 or self.enemy["hp"][0] <= 0):
 				button_image(gameDisplay,"End Battle",400-73,475,145,36,buttonNeutral,buttonActive,self.end_it)
+				if(self.enemy["hp"][0] <= 0 and self.charInfo["hp"][0] > 0):
+					gold = self.give_gold
+					battleText.end_game(self.gold)
 				if(self.end):
 					break
 
+			elif(self.location == 1):
+				button_image(gameDisplay,"Weak Potion",150,450,145,36,buttonNeutral,buttonActive,self.heal, "weak")
+				button_image(gameDisplay,"Normal Potion",350,450,145,36,buttonNeutral,buttonActive,self.heal,"normal")
+				button_image(gameDisplay,"Strong Potion",550,450,145,36,buttonNeutral,buttonActive,self.heal, "strong")
+				button_image(gameDisplay,"Max Potion",150,500,145,36,buttonNeutral,buttonActive,self.heal,"max")
+				button_image(gameDisplay,"Attacks",550,500,145,36,buttonNeutral,buttonActive,self.change_loc,0)
+
 			else:
-				button_image(gameDisplay,"Weak Attack",150,475,145,36,buttonNeutral,buttonActive,self.weak_attack)
-				button_image(gameDisplay,"Strong Attack",450,475,145,36,buttonNeutral,buttonActive,self.strong_attack)
+				button_image(gameDisplay,"Weak Attack",100,475,145,36,buttonNeutral,buttonActive,self.weak_attack)
+				button_image(gameDisplay,"Strong Attack",500,475,145,36,buttonNeutral,buttonActive,self.strong_attack)
+				button_image(gameDisplay,"Health Potion",300,475,145,36,buttonNeutral,buttonActive,self.change_loc,1)
 
 
+			battleText.update(charInfo,self.enemy, self.text)
 			pygame.display.update()
-			clock.tick(60)
+			clock.tick(15)
+
 		self.give_exp()
-		self.give_gold()
 		self.level_up(gameDisplay)
 
 	#--------------------------------------------------------------------------
-
-	def char_text(self,gameDisplay):
-		pygame.draw.rect(gameDisplay,red,(70,74,150,35))
-		size = int(142*(self.charInfo["hp"][0]/self.charInfo["hp"][1]))
-		if(size < 0):
-			size = 0
-		if self.charInfo["hp"][0]/self.charInfo["hp"][1] > 0.80:
-			pygame.draw.rect(gameDisplay,bright_green,(73,78,size,27))
-		elif self.charInfo["hp"][0]/self.charInfo["hp"][1] > 0.30:
-			pygame.draw.rect(gameDisplay,yellow,(73,78,size,27))
-		else:
-			pygame.draw.rect(gameDisplay,bright_red,(73,78,size,27))
-
-		pygame.draw.rect(gameDisplay,blue,(70,114,150,35))
-		size = int(142*(self.charInfo["mp"][0]/self.charInfo["mp"][1]))
-		pygame.draw.rect(gameDisplay,bright_blue,(73,118,size,27))
-
-		text = "HP: "+str(self.charInfo["hp"][0])+" / "+str(self.charInfo["hp"][1])
-		print_text(gameDisplay,text,"arial",25,black,(75,75))
-
-		text = "MP: "+str(self.charInfo["mp"][0])+" / "+str(self.charInfo["mp"][1])
-		print_text(gameDisplay,text,"arial",25,black,(73,115))
-
-	#--------------------------------------------------------------------------
-
-	def enemy_text(self,gameDisplay):
-		pygame.draw.rect(gameDisplay,red,(545,114,150,35))
-		size = int(142*(self.enemy["hp"][0]/self.enemy["hp"][1]))
-		if(size < 0):
-			size = 0
-		pygame.draw.rect(gameDisplay,bright_red,(548,118,size,27))
-
-		print_text(gameDisplay,self.enemy["name"],"arial",25,bright_red,(550,75))
-		text = "HP: "+str(self.enemy["hp"][0])+" / "+str(self.enemy["hp"][1])
-		print_text(gameDisplay,text,"arial",25,black,(550,115))
-
-	#--------------------------------------------------------------------------
-
+	def change_loc(self, loc):
+		self.location = loc
 
 	def forrest_battle(self):
 		randNum = random.randint(1,5)
@@ -152,17 +132,17 @@ class battle():
 	#--------------------------------------------------------------------------
 
 	def harlech_house_battle(self):
-		randNum = random.randint(1,5)
+		#pygame.draw.rect(gameDisplay,yellow,(73,300,150,15))
+		randNum = random.randint(1,2)
 		if(randNum == 1):
-			enemy = {"name": "Giant Squid", "hp": [60,60], "str":6, "exp": 100, "lvl":12, "gold": [15,35]}
+			enemy = {"name": "Lesser Demon", "hp": [75,75], "str":8, "exp": 200, "lvl":12, "gold": [50,100]}
+			#text = "Screaming can be heard from deeper within the house, this is not the end..."
+			#print_text(gameDisplay,text,"arial",15,white,(73,300))
 		elif(randNum == 2):
-			enemy = {"name": "Squid", "hp": [40,40], "str":4, "exp": 100, "lvl":12, "gold": [12,28]}
-		elif(randNum == 3):
-			enemy = {"name": "Water Nymph", "hp": [66,66], "str":6, "exp": 100, "lvl":12, "gold": [26,48]}
-		elif(randNum == 4):
-			enemy = {"name": "Crab", "hp": [48,48], "str":5, "exp": 100, "lvl":12, "gold": [22,32]}
-		elif(randNum == 5):
-			enemy = {"name": "Giant Crab", "hp": [64,64], "str":6, "exp": 100, "lvl":12, "gold": [25, 50]}
+			enemy = {"name": "Harlech Demon", "hp": [90,90], "str":10, "exp": 300, "lvl":12, "gold": [75,250]}
+			#text = "Your spine shivers, this must be the demon of the Harlech House!"
+			#print_text(gameDisplay,text,"arial",15,white,(73,300))
+
 		return enemy 
 
 	#--------------------------------------------------------------------------
@@ -194,10 +174,53 @@ class battle():
 
 	#--------------------------------------------------------------------------
 
+	def heal(self, potion):
+		print("using potion")
+		if(self.turn == True and self.charInfo["potions"][0] >= 1 and potion == "weak"):
+			maximum = math.ceil(self.charInfo["hp"][1]*.4)
+			minimum = math.floor(self.charInfo["hp"][1]*.2)
+			regeneration = random.randint(minimum,maximum)
+			self.charInfo["hp"][0] += regeneration
+			if self.charInfo["hp"][0] > self.charInfo["hp"][1]:
+				self.charInfo["hp"][0] = self.charInfo["hp"][1]
+			self.charInfo["potions"][0] -=1
+			self.text[0] = "You healed "+str(regeneration)+" with a weak health potion."
+			self.turn = False
+		elif(self.turn == True and self.charInfo["potions"][1] >= 1 and potion == "normal"):
+			maximum = math.ceil(self.charInfo["hp"][1]*.6)
+			minimum = math.floor(self.charInfo["hp"][1]*.4)
+			regeneration = random.randint(minimum,maximum)
+			self.charInfo["hp"][0] += regeneration
+			if self.charInfo["hp"][0] > self.charInfo["hp"][1]:
+				self.charInfo["hp"][0] = self.charInfo["hp"][1]
+			self.charInfo["potions"][1] -=1
+			self.text[0] = "You healed "+str(regeneration)+" with a weak health potion."
+			self.turn = False
+		elif(self.turn == True and self.charInfo["potions"][2] >= 1 and potion == "strong"):
+			maximum = math.ceil(self.charInfo["hp"][1]*.8)
+			minimum = math.floor(self.charInfo["hp"][1]*.6)
+			regeneration = random.randint(minimum,maximum)
+			self.charInfo["hp"][0] += regeneration
+			if self.charInfo["hp"][0] > self.charInfo["hp"][1]:
+				self.charInfo["hp"][0] = self.charInfo["hp"][1]
+			self.charInfo["potions"][2] -=1
+			self.text[0] = "You healed "+str(regeneration)+" with a weak health potion."
+			self.turn = False
+		elif(self.turn == True and self.charInfo["potions"][3] >= 1 and potion == "max"):
+			regeneration = self.charInfo["hp"][1] - self.charInfo["hp"][0]
+			self.charInfo["hp"][0] = self.charInfo["hp"][1]
+			self.charInfo["potions"][2] -= 1
+			self.text[0] = "You healed "+str(regeneration)+" with a weak health potion."
+			self.turn = False
+		else:
+			pass
+
+		#--------------------------------------------------------------------------
+
 	def enemy_turn(self):
 		if(self.turn == False):
-			minimum = 2
-			maximum = 2+self.enemy["str"]
+			minimum = 2 - self.charInfo["def"]
+			maximum = 2+self.enemy["str"]-self.charInfo["def"]
 			damage = random.randint(minimum,maximum) * self.charInfo["difficulty"]
 			self.charInfo["hp"][0] -= damage
 			self.text[1] = "The enemy dealt "+str(damage)+" damage"
@@ -220,9 +243,11 @@ class battle():
 		print(self.charInfo["exp"])
 
 	def give_gold(self):
-		gold = random.randint(self.enemy["gold"][0], self.enemy["gold"][1])
-		self.charInfo["gold"] += gold
-		print(self.charInfo["gold"])
+		if(self.give_gold_loc == 0):
+			self.gold = random.randint(self.enemy["gold"][0], self.enemy["gold"][1])
+			self.charInfo["gold"] += gold
+			print(self.charInfo["gold"])
+		self.give_gold_loc = 1
 
 	#--------------------------------------------------------------------------
 
